@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chest X-Ray AI Analyzer</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="brand">
+            <div class="brand-icon">✚</div>
+            <div>
+                <strong>XRayAI</strong>
+                <span>Chest Analysis</span>
+            </div>
+        </div>
+
+        <div class="nav-badge">
+            <span class="status-dot"></span>
+            AI System Online
+        </div>
+    </nav>
+
+
+    <!-- HERO -->
+    <header class="hero">
+
+        <div class="hero-badge">
+            <span>✦</span>
+            AI-Powered Medical Imaging
+        </div>
+
+        <h1>
+            Chest X-Ray
+            <span>AI Analyzer</span>
+        </h1>
+
+        <p>
+            Analyze chest X-ray images using a DenseNet121 deep learning model
+            with explainable AI visualization.
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <!-- UPLOAD CARD -->
+        <section class="card upload-card">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">STEP 01</span>
+                    <h2>Upload your X-Ray</h2>
+                    <p>Select a clear chest X-ray image for analysis.</p>
+                </div>
+            </div>
+
+
+            <label for="imageInput" class="upload-area" id="uploadArea">
+
+                <div class="upload-icon">
+                    🫁
+                </div>
+
+                <h3>Drop your X-ray here</h3>
+
+                <p>
+                    or <span>click to browse</span>
+                </p>
+
+                <small>
+                    Supported formats: PNG, JPG, JPEG
+                </small>
+
+            </label>
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/png, image/jpeg, image/jpg"
+                hidden
+            >
+
+
+            <!-- PREVIEW -->
+            <div id="preview-container" class="preview-container">
+
+                <div class="preview-header">
+                    <span>Selected X-Ray</span>
+                    <button id="removeBtn" class="remove-btn" type="button">
+                        Remove
+                    </button>
+                </div>
+
+                <div class="preview-box">
+                    <img id="preview" alt="Selected chest X-ray">
+                </div>
+
+            </div>
+
+
+            <button id="predictBtn" class="analyze-btn" disabled>
+
+                <span class="btn-icon">✦</span>
+                <span id="btnText">Analyze X-Ray</span>
+
+            </button>
+
+            <p id="status" class="status"></p>
+
+        </section>
+
+
+        <!-- RESULT -->
+        <section id="result-section" class="card result-card">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">STEP 02</span>
+                    <h2>Analysis Result</h2>
+                    <p>Model prediction and probability distribution.</p>
+                </div>
+            </div>
+
+
+            <div class="prediction-card">
+
+                <span class="prediction-label">
+                    AI PREDICTION
+                </span>
+
+                <h3 id="prediction">—</h3>
+
+                <div class="confidence-pill">
+                    <span>Confidence</span>
+                    <strong id="confidence">—</strong>
+                </div>
+
+            </div>
+
+
+            <div class="probabilities">
+
+                <div class="probability">
+
+                    <div class="probability-header">
+                        <span>COVID</span>
+                        <strong id="covid-value">0%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div id="covid-bar"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="probability">
+
+                    <div class="probability-header">
+                        <span>NORMAL</span>
+                        <strong id="normal-value">0%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div id="normal-bar"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="probability">
+
+                    <div class="probability-header">
+                        <span>PNEUMONIA</span>
+                        <strong id="pneumonia-value">0%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div id="pneumonia-bar"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- GRAD-CAM -->
+        <section id="gradcam-section" class="card gradcam-card">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">STEP 03</span>
+                    <h2>Explainable AI</h2>
+
+                    <p>
+                        Grad-CAM highlights the image regions that influenced
+                        the model's prediction.
+                    </p>
+                </div>
+
+                <div class="xai-badge">
+                    Grad-CAM
+                </div>
+
+            </div>
+
+
+            <div class="images">
+
+                <div class="image-card">
+
+                    <div class="image-title">
+                        <span class="image-number">01</span>
+                        <h3>Original X-Ray</h3>
+                    </div>
+
+                    <div class="image-wrapper">
+                        <img
+                            id="original-image"
+                            alt="Original chest X-ray"
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="image-card">
+
+                    <div class="image-title">
+                        <span class="image-number">02</span>
+                        <h3>AI Attention Map</h3>
+                    </div>
+
+                    <div class="image-wrapper">
+                        <img
+                            id="gradcam-image"
+                            alt="Grad-CAM visualization"
+                        >
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="xai-explanation">
+
+                <span class="info-icon">ⓘ</span>
+
+                <p>
+                    The highlighted regions represent areas where the model
+                    focused when generating its prediction. This visualization
+                    is provided for model interpretability.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- NEW ANALYSIS -->
+        <div id="new-analysis-container" class="new-analysis-container">
+
+            <button id="newAnalysisBtn" class="secondary-btn">
+                ↻ Analyze Another X-Ray
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-brand">
+            <strong>XRayAI</strong>
+            <span>DenseNet121 Chest X-Ray Classification</span>
+        </div>
+
+        <p>
+            For educational and research purposes only.
+            This system is not a substitute for professional medical advice.
+        </p>
+
+    </footer>
+
+</div>
+
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>

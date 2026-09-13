@@ -1,0 +1,24 @@
+{
+  "disease_class_indices": {
+    "COVID": 0,
+    "NORMAL": 1,
+    "PNEUMONIA": 2
+  },
+  "disease_idx_to_class": {
+    "0": "COVID",
+    "1": "NORMAL",
+    "2": "PNEUMONIA"
+  },
+  "img_size": [
+    224,
+    224
+  ],
+  "preprocessing": "densenet_preprocess_input",
+  "model_architecture": "DenseNet121",
+  "input_shape": [
+    224,
+    224,
+    3
+  ],
+  "gatekeeper_threshold": 0.5
+}
